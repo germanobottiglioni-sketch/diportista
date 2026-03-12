@@ -1,0 +1,1029 @@
+  Widget _buildPremiumCompactCard() {
+    return ValueListenableBuilder<bool>(
+      valueListenable: PremiumService.instance.premiumActive,
+      builder: (context, isPremium, _) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(22),
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: isPremium
+                  ? const [
+                      Color(0xFF2A241D),
+                      Color(0xFF0B1021),
+                    ]
+                  : const [
+                      Color(0xFF243A67),
+                      Color(0xFF0B1021),
+                    ],
+            ),
+            border: Border.all(
+              color: isPremium
+                  ? _kGold.withOpacity(0.86)
+                  : _kNavyBorder.withOpacity(0.56),
+              width: isPremium ? 1.3 : 1.0,
+            ),
+            boxShadow: [
+              ..._kStrong3DShadow,
+              if (isPremium)
+                BoxShadow(
+                  color: _kGold.withOpacity(0.18),
+                  blurRadius: 22,
+                  offset: const Offset(0, 9),
+                )
+              else
+                BoxShadow(
+                  color: _kGold.withOpacity(0.10),
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+            ],
+          ),
+          child: Stack(
+            children: [
+              Positioned.fill(child: _buildCardTopHighlight(radius: 22)),
+              if (!isPremium)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: IgnorePointer(
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.vertical(
+                          bottom: Radius.circular(22),
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            _kGold.withOpacity(0.45),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(22),
+                  onTap: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const PremiumPage(),
+                      ),
+                    );
+                    await _caricaDati();
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 42,
+                          height: 42,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: isPremium
+                                  ? const [
+                                      Color(0xFF5B4724),
+                                      Color(0xFF1A150D),
+                                    ]
+                                  : const [
+                                      Color(0xFF5C4925),
+                                      Color(0xFF162033),
+                                    ],
+                            ),
+                            border: Border.all(
+                              color: isPremium
+                                  ? _kGold2.withOpacity(0.70)
+                                  : _kGold.withOpacity(0.42),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.42),
+                                blurRadius: 11,
+                                offset: const Offset(0, 5),
+                              ),
+                              BoxShadow(
+                                color: _kGold.withOpacity(isPremium ? 0.22 : 0.14),
+                                blurRadius: 12,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.workspace_premium_rounded,
+                            color: isPremium ? _kGold2 : _kGold2.withOpacity(0.96),
+                            size: 21,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Diportista Premium',
+                                style: TextStyle(
+                                  color: isPremium ? _kGold2 : Colors.white,
+                                  fontSize: 13.8,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 0.18,
+                                ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                isPremium
+                                    ? (_isEn
+                                        ? 'Premium active ✅'
+                                        : 'Premium attivo ✅')
+                                    : (_isEn
+                                        ? 'Unlock advanced features'
+                                        : 'Sblocca le funzioni avanzate'),
+                                style: TextStyle(
+                                  color: isPremium
+                                      ? _kGold2.withOpacity(0.98)
+                                      : Colors.white70,
+                                  fontSize: 10.9,
+                                  fontWeight:
+                                      isPremium ? FontWeight.w800 : FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (isPremium)
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 9,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(999),
+                              color: Colors.black.withOpacity(0.20),
+                              border: Border.all(
+                                color: _kGold2.withOpacity(0.76),
+                              ),
+                            ),
+                            child: Text(
+                              _isEn ? 'ACTIVE' : 'ATTIVO',
+                              style: const TextStyle(
+                                color: _kGold2,
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w900,
+                                letterSpacing: 0.4,
+                              ),
+                            ),
+                          )
+                        else
+                          Icon(
+                            Icons.chevron_right_rounded,
+                            color: _kGold2.withOpacity(0.96),
+                            size: 24,
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _quickActionCompact({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return Expanded(
+      child: _PressableScale(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(18),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(18),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF243A67),
+                Color(0xFF0B1021),
+              ],
+            ),
+            border: Border.all(
+              color: _kNavyBorder.withOpacity(0.50),
+            ),
+            boxShadow: _kStrong3DShadow,
+          ),
+          child: Stack(
+            children: [
+              Positioned.fill(child: _buildCardTopHighlight(radius: 18)),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 12, 10, 12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF33528A),
+                            Color(0xFF101726),
+                          ],
+                        ),
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.10),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.42),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: Icon(
+                        icon,
+                        color: Colors.white,
+                        size: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11.8,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white70,
+                        fontSize: 10.0,
+                        height: 1.12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildQuickActionsCompact() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          _isEn ? 'Quick actions' : 'Azioni rapide',
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            _quickActionCompact(
+              icon: Icons.bar_chart_rounded,
+              title: _isEn ? 'Charts' : 'Grafici',
+              subtitle: _isEn ? 'Trends' : 'Trend',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const GraficiPage(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+            _quickActionCompact(
+              icon: Icons.download_rounded,
+              title: _isEn ? 'Export' : 'Export',
+              subtitle: _isEn ? 'CSV' : 'CSV',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const EsportazionePage(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(width: 8),
+            _quickActionCompact(
+              icon: Icons.backup_rounded,
+              title: _isEn ? 'Backup' : 'Backup',
+              subtitle: _isEn ? 'Restore' : 'Ripristino',
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BackupRipristinoPage(),
+                  ),
+                ).then((_) => _caricaDati());
+              },
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Drawer _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: Column(
+        children: [
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [_kAccentBlue, _kNavy3],
+              ),
+            ),
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                _isEn ? 'Menu' : 'Menu',
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.play_arrow_rounded),
+            title: Text(_isEn ? 'New trip' : 'Nuova uscita'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const NuovaUscitaPage()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.history_rounded),
+            title: Text(_isEn ? 'Trips history' : 'Storico uscite'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const StoricoScreen()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.local_gas_station_rounded),
+            title: Text(_isEn ? 'Fuel refills' : 'Rifornimenti'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const RifornimentiPage()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.receipt_long_rounded),
+            title: Text(_isEn ? 'Boat expenses' : 'Spese barca'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const SpeseVariePage()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.sensors_rounded),
+            title: Text(_isEn ? 'On-board instrumentation' : 'Strumentazione'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const StrumentazionePage()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.bar_chart_rounded),
+            title: Text(_isEn ? 'Charts' : 'Grafici'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const GraficiPage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.download_rounded),
+            title: Text(_isEn ? 'Export' : 'Esportazione'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const EsportazionePage()),
+              );
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.backup_rounded),
+            title: Text(_isEn ? 'Backup / Restore' : 'Backup / Ripristino'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const BackupRipristinoPage()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.school_rounded),
+            title: Text(_isEn ? 'Quick guide' : 'Guida rapida'),
+            onTap: () async {
+              Navigator.pop(context);
+              await TutorialPrefs.reset();
+              if (!mounted) return;
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const TutorialPage(returnToPrevious: true),
+                ),
+              );
+              await TutorialPrefs.setDone();
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.settings_rounded),
+            title: Text(_isEn ? 'Settings' : 'Impostazioni'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ImpostazioniPage()),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 14),
+            child: FutureBuilder<PackageInfo>(
+              future: _packageInfoFuture,
+              builder: (context, snap) {
+                final text = snap.hasData
+                    ? 'Diportista ${snap.data!.version} (${snap.data!.buildNumber})'
+                    : 'Diportista';
+
+                return Text(
+                  text,
+                  style: const TextStyle(
+                    color: Colors.black45,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: _buildDrawer(context),
+      backgroundColor: _kBg,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        toolbarHeight: 58,
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleSpacing: 8,
+        title: Text(
+          'Diportista',
+          style: TextStyle(
+            color: Colors.white.withOpacity(0.95),
+            fontWeight: FontWeight.w800,
+            fontSize: 17,
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: Center(child: _buildNmeaPill()),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 6),
+            child: Center(child: _buildBrandIconBadge(size: 34)),
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings_rounded, color: Colors.white),
+            tooltip: _isEn ? 'Settings' : 'Impostazioni',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const ImpostazioniPage(),
+                ),
+              ).then((_) => _caricaDati());
+            },
+          ),
+          const SizedBox(width: 2),
+        ],
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: _kPageGradient,
+        ),
+        child: RefreshIndicator(
+          onRefresh: _caricaDati,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.fromLTRB(12, 8, 12, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeaderCompact(),
+                const SizedBox(height: 10),
+                if (_loadingStats)
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(18),
+                      color: Colors.white.withOpacity(0.06),
+                      border: Border.all(color: Colors.white12),
+                    ),
+                    child: Row(
+                      children: [
+                        const SizedBox(
+                          width: 17,
+                          height: 17,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        const SizedBox(width: 10),
+                        Text(
+                          _isEn ? 'Updating data…' : 'Aggiorno i dati…',
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                else ...[
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 260),
+                    builder: (context, t, child) => Opacity(
+                      opacity: t,
+                      child: Transform.translate(
+                        offset: Offset(0, 12 * (1 - t)),
+                        child: child,
+                      ),
+                    ),
+                    child: _buildFuelHeroCompact(),
+                  ),
+                  const SizedBox(height: 10),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 360),
+                    builder: (context, t, child) => Opacity(
+                      opacity: t,
+                      child: Transform.translate(
+                        offset: Offset(0, 14 * (1 - t)),
+                        child: child,
+                      ),
+                    ),
+                    child: _buildBigKpiGridCompact(),
+                  ),
+                  const SizedBox(height: 10),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 440),
+                    builder: (context, t, child) => Opacity(
+                      opacity: t,
+                      child: Transform.translate(
+                        offset: Offset(0, 16 * (1 - t)),
+                        child: child,
+                      ),
+                    ),
+                    child: _buildCostsCompactCard(),
+                  ),
+                  const SizedBox(height: 10),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 520),
+                    builder: (context, t, child) => Opacity(
+                      opacity: t,
+                      child: Transform.translate(
+                        offset: Offset(0, 18 * (1 - t)),
+                        child: child,
+                      ),
+                    ),
+                    child: _buildPremiumCompactCard(),
+                  ),
+                  const SizedBox(height: 12),
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0, end: 1),
+                    duration: const Duration(milliseconds: 600),
+                    builder: (context, t, child) => Opacity(
+                      opacity: t,
+                      child: Transform.translate(
+                        offset: Offset(0, 20 * (1 - t)),
+                        child: child,
+                      ),
+                    ),
+                    child: _buildQuickActionsCompact(),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _KpiCard extends StatelessWidget {
+  final String label;
+  final String value;
+  final IconData icon;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+
+  const _KpiCard({
+    required this.label,
+    required this.value,
+    required this.icon,
+    this.onTap,
+    this.onLongPress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return _PressableScale(
+      onTap: onTap,
+      onLongPress: onLongPress,
+      borderRadius: BorderRadius.circular(18),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              Color(0xFF2B4678),
+              Color(0xFF0B1021),
+            ],
+          ),
+          border: Border.all(
+            color: const Color(0xFF28477F).withOpacity(0.44),
+            width: 0.95,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.76),
+              blurRadius: 28,
+              offset: const Offset(0, 15),
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.24),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+            BoxShadow(
+              color: Colors.white.withOpacity(0.09),
+              blurRadius: 7,
+              offset: const Offset(0, -2),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(18),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.center,
+                      colors: [
+                        Colors.white.withOpacity(0.20),
+                        Colors.white.withOpacity(0.05),
+                        Colors.transparent,
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Positioned.fill(
+              child: IgnorePointer(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(18),
+                    ),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.white.withOpacity(0.20),
+                        Colors.white.withOpacity(0.08),
+                        Colors.white.withOpacity(0.02),
+                        Colors.transparent,
+                      ],
+                      stops: const [0.0, 0.24, 0.46, 1.0],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 11, 12, 11),
+              child: Row(
+                children: [
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Color(0xFF4E79C7),
+                          Color(0xFF11192A),
+                        ],
+                      ),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(0.12),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.48),
+                          blurRadius: 12,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: IgnorePointer(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.white.withOpacity(0.20),
+                                    Colors.transparent,
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Icon(
+                            icon,
+                            size: 18,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          label,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white70,
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w600,
+                            height: 1.0,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          value,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w900,
+                            height: 1.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _PressableScale extends StatefulWidget {
+  final Widget child;
+  final VoidCallback? onTap;
+  final VoidCallback? onLongPress;
+  final BorderRadius? borderRadius;
+
+  const _PressableScale({
+    required this.child,
+    this.onTap,
+    this.onLongPress,
+    this.borderRadius,
+  });
+
+  @override
+  State<_PressableScale> createState() => _PressableScaleState();
+}
+
+class _PressableScaleState extends State<_PressableScale> {
+  bool _pressed = false;
+
+  void _setPressed(bool value) {
+    if (_pressed == value) return;
+    setState(() => _pressed = value);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final radius = widget.borderRadius ?? BorderRadius.circular(16);
+
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTapDown: (_) => _setPressed(true),
+      onTapCancel: () => _setPressed(false),
+      onTapUp: (_) => _setPressed(false),
+      onLongPressStart: (_) => _setPressed(true),
+      onLongPressEnd: (_) => _setPressed(false),
+      onTap: widget.onTap,
+      onLongPress: widget.onLongPress,
+      child: AnimatedScale(
+        scale: _pressed ? 0.965 : 1.0,
+        duration: const Duration(milliseconds: 120),
+        curve: Curves.easeOutCubic,
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: radius,
+          child: InkWell(
+            borderRadius: radius,
+            splashColor: Colors.white.withOpacity(0.05),
+            highlightColor: Colors.transparent,
+            onTap: widget.onTap,
+            onLongPress: widget.onLongPress,
+            child: widget.child,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _PulsingDot extends StatefulWidget {
+  final Color color;
+  final double size;
+  final bool active;
+
+  const _PulsingDot({
+    required this.color,
+    this.size = 8,
+    this.active = true,
+  });
+
+  @override
+  State<_PulsingDot> createState() => _PulsingDotState();
+}
+
+class _PulsingDotState extends State<_PulsingDot>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1100),
+    );
+
+    if (widget.active) {
+      _controller.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant _PulsingDot oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.active && !_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    } else if (!widget.active && _controller.isAnimating) {
+      _controller.stop();
+      _controller.value = 1.0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final animation = Tween<double>(
+      begin: widget.active ? 0.40 : 1.0,
+      end: 1.0,
+    ).animate(
+      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
+    );
+
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, _) {
+        final opacity = widget.active ? animation.value : 1.0;
+        return Container(
+          width: widget.size,
+          height: widget.size,
+          decoration: BoxDecoration(
+            color: widget.color.withOpacity(opacity),
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: Colors.white.withOpacity(0.55),
+              width: 0.5,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: widget.color.withOpacity(
+                  widget.active ? 0.68 * opacity : 0.35,
+                ),
+                blurRadius: widget.active ? 12 : 6,
+                offset: const Offset(0, 0),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
